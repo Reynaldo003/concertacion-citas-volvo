@@ -46,6 +46,13 @@ const FUENTE = [
   "Referido",
 ];
 
+const TIPOS_CITA = [
+  "Digital",
+  "Tradicional",
+  "Evento",
+  "Remarketing",
+];
+
 const ASESORES = [
   "Enrique Vazquez Islas",
   "Ricardo Platas",
@@ -59,6 +66,7 @@ const FORM_INICIAL = {
   telefono: "",
   auto_interes: "",
   fecha_hora_cita: "",
+  tipo_cita: "",
   fuente_prospeccion: "",
   asesor_piso: "",
   comentarios: "",
@@ -127,8 +135,9 @@ function normalizarPayload(form) {
     telefono: normalizarTelefonoMx(form.telefono),
     auto_interes: texto(form.auto_interes),
     fecha_hora_cita: texto(form.fecha_hora_cita),
+    tipo_cita: texto(form.tipo_cita),
     fuente_prospeccion: texto(form.fuente_prospeccion),
-    asesor_piso: texto(form.asesor_piso),
+    asesor_piso: esAsesorValido(form.asesor_piso) ? texto(form.asesor_piso) : "",
     comentarios: texto(form.comentarios),
   };
 }
@@ -142,6 +151,7 @@ function obtenerErrores(form) {
   if (!texto(form.auto_interes)) errores.auto_interes = "Selecciona el Volvo de interés.";
   if (!texto(form.fecha_hora_cita)) errores.fecha_hora_cita = "Selecciona fecha y hora.";
   if (!texto(form.fuente_prospeccion)) errores.fuente_prospeccion = "Selecciona la fuente.";
+  if (!texto(form.tipo_cita)) errores.tipo_cita = "Selecciona el tipo de cita.";
   if (!texto(form.asesor_piso)) errores.asesor_piso = "Selecciona el asesor de piso.";
 
   return errores;
@@ -482,6 +492,25 @@ export default function App() {
                   </Campo>
 
                   <Campo
+                    label="Tipo de cita"
+                    icono={CalendarDays}
+                    requerido
+                    error={error("tipo_cita")}
+                  >
+                    <Select
+                      value={form.tipo_cita}
+                      error={error("tipo_cita")}
+                      onChange={(e) => updateField("tipo_cita", e.target.value)}
+                    >
+                      {TIPOS_CITA.map((tipo) => (
+                        <option key={tipo} value={tipo}>
+                          {tipo}
+                        </option>
+                      ))}
+                    </Select>
+                  </Campo>
+
+                  <Campo
                     label="Fuente"
                     icono={MessageSquareText}
                     requerido
@@ -518,7 +547,7 @@ export default function App() {
                   <Campo
                     label="Comentarios"
                     icono={CalendarDays}
-                    className="sm:col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-3"
+                    className="sm:col-span-2 md:col-span-2 lg:col-span-2 xl:col-span-2"
                   >
                     <Textarea
                       value={form.comentarios}
