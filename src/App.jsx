@@ -58,6 +58,7 @@ const ASESORES = [
   "Ricardo Platas",
   "Verónica Del Rayo Galindo León",
   "Julio Camacho Barragán",
+  "Fernanda Romero Aguilar",
 ];
 
 const FORM_INICIAL = {
