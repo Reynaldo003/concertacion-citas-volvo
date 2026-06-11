@@ -92,6 +92,20 @@ function normalizarBusqueda(valor) {
     .toLowerCase();
 }
 
+function obtenerAsesorValido(valor) {
+  const asesorBuscado = normalizarBusqueda(valor);
+
+  if (!asesorBuscado) return null;
+
+  return ASESORES.find((asesor) => {
+    return normalizarBusqueda(asesor) === asesorBuscado;
+  }) || null;
+}
+
+function esAsesorValido(valor) {
+  return Boolean(obtenerAsesorValido(valor));
+}
+
 function validarTelefono(valor) {
   const telefono = soloNumeros(valor);
 
@@ -130,6 +144,8 @@ function mensajeTelefono(valor) {
 }
 
 function normalizarPayload(form) {
+  const asesorValido = obtenerAsesorValido(form.asesor_piso);
+
   return {
     agencia: texto(form.agencia),
     nombre: texto(form.nombre).toUpperCase(),
@@ -138,7 +154,8 @@ function normalizarPayload(form) {
     fecha_hora_cita: texto(form.fecha_hora_cita),
     tipo_cita: texto(form.tipo_cita),
     fuente_prospeccion: texto(form.fuente_prospeccion),
-    asesor_piso: esAsesorValido(form.asesor_piso) ? texto(form.asesor_piso) : "",
+    asesor_piso: asesorValido || "",
+
     comentarios: texto(form.comentarios),
   };
 }
@@ -153,8 +170,11 @@ function obtenerErrores(form) {
   if (!texto(form.fecha_hora_cita)) errores.fecha_hora_cita = "Selecciona fecha y hora.";
   if (!texto(form.fuente_prospeccion)) errores.fuente_prospeccion = "Selecciona la fuente.";
   if (!texto(form.tipo_cita)) errores.tipo_cita = "Selecciona el tipo de cita.";
-  if (!texto(form.asesor_piso)) errores.asesor_piso = "Selecciona el asesor de piso.";
-
+  if (!texto(form.asesor_piso)) {
+    errores.asesor_piso = "Selecciona el asesor de piso.";
+  } else if (!esAsesorValido(form.asesor_piso)) {
+    errores.asesor_piso = "Selecciona un asesor válido de la lista.";
+  }
   return errores;
 }
 
@@ -277,7 +297,7 @@ function AsesorAutocomplete({ value, onChange, error }) {
               onClick={() => setAbierto(false)}
               className="block w-full rounded-md px-2 py-1.5 text-left text-[11px] font-semibold text-white/70 hover:bg-white/10"
             >
-              Sin coincidencias. Puedes dejarlo escrito.
+              Sin coincidencias. Selecciona un asesor de la lista.
             </button>
           ) : null}
 
@@ -503,6 +523,8 @@ export default function App() {
                       error={error("tipo_cita")}
                       onChange={(e) => updateField("tipo_cita", e.target.value)}
                     >
+                      <option value="">Seleccionar...</option>
+
                       {TIPOS_CITA.map((tipo) => (
                         <option key={tipo} value={tipo}>
                           {tipo}
