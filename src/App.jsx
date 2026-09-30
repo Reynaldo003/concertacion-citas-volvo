@@ -63,6 +63,7 @@ const ASESORES = [
   "Julio Camacho Barragán",
   "Fernanda Romero Aguilar",
   "Zaira Vanessa Hernández Gómez",
+  "Carlos Bautista Camacho",
 ];
 
 const FORM_INICIAL = {
