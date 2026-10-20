@@ -56,6 +56,8 @@ const TIPOS_CITA = [
   "Tradicional",
   "Evento",
   "Remarketing",
+  "Prueba de manejo",
+  "Entrega de unidad",
 ];
 
 const ASESORES = [
