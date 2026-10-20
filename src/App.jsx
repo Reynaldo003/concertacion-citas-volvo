@@ -26,10 +26,12 @@ const VEHICULOS = [
   "EX40",
   "EC40",
   "EX90",
+  "XC40",
   "XC60",
   "XC90",
   "XC60 Black Edition",
   "XC90 Black Edition",
+  "Polestar",
   "Seminuevos",
   "Avalúo",
 ];
