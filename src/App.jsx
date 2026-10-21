@@ -68,6 +68,7 @@ const ASESORES = [
   "Fernanda Romero Aguilar",
   "Zaira Vanessa Hernández Gómez",
   "Carlos Bautista Camacho",
+  "Iván López Montero",
 ];
 
 const FORM_INICIAL = {
